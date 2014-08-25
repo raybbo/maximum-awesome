@@ -1,7 +1,21 @@
-set nocursorline " don't highlight current line
+set cursorline                      " highlight current line
+set completeopt-=preview            " disable Scratch window
+set clipboard+=unnamed              " yank and paste with the system clipboard
+set shiftwidth=4                    " normal mode indentation commands use 4 spaces
+set softtabstop=4                   " insert mode tab and backspace use 4 spaces
 
 " keyboard shortcuts
+" jj work with nopaste mode only?
 inoremap jj <ESC>
+
+" airline (fonts not works)
+" Download font from https://github.com/Lokaltog/powerline-fonts
+" Double click to install the font
+"let g:airline_powerline_fonts = 1
+
+" disable pylint or syntastic
+"let g:pymode_lint = 0
+let g:syntastic_ignore_files = ['\.py$']
 
 " highlight search
 "set hlsearch
@@ -9,12 +23,27 @@ inoremap jj <ESC>
 
 " gui settings
 if (&t_Co == 256 || has('gui_running'))
-  if ($TERM_PROGRAM == 'iTerm.app')
-    colorscheme solarized
-  else
-    colorscheme desert
-  endif
+  set background=dark
+  set gfn=Monaco:h16                                           " GUI font
+  colorscheme solarized
 endif
+
+" Hex editting mode
+noremap <F8> :call SwitchHexMode()<CR>
+
+let $is_hex=0
+
+function SwitchHexMode()
+    set binary
+    set noeol
+    if $is_hex>0
+        :%!xxd -r
+        let $is_hex=0
+    else
+        :%!xxd
+        let $is_hex=1
+    endif
+endfunction
 
 " Disambiguate ,a & ,t from the Align plugin, making them fast again.
 "
